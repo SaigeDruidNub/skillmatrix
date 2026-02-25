@@ -24,6 +24,11 @@ const COOPERATIVE_SKILLS = [
     name: "Ethical Practice",
     description: "Acts with integrity and upholds ethical standards.",
   },
+  {
+    name: "Co-operative Expertise",
+    description:
+      "Deep understanding of, and experience working with, co-operative principles and the co-operative business philosophy. ",
+  },
 ];
 
 const DEFAULTS = {
@@ -370,61 +375,219 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
         </button>
       </div>
 
-      {/* Rating Scale Key */}
+      {/* Skills and Experience Assessment Scale Key */}
       <div
         className="mb-8 mt-4 p-4 rounded"
         style={{
           background: "var(--opal)",
           border: "1px solid var(--dim-gray)",
-          maxWidth: 600,
+          maxWidth: 900,
         }}
       >
-        <div className="font-semibold mb-2">Rating Scale Key:</div>
-        {type === "employee" ? (
-          <ul className="text-sm list-disc pl-6">
-            <li>
-              <b>None</b>: No experience or knowledge in this area.
-            </li>
-            <li>
-              <b>Beginner</b>: Basic awareness or understanding; requires
-              supervision.
-            </li>
-            <li>
-              <b>Intermediate</b>: Can perform tasks independently; solid
-              understanding.
-            </li>
-            <li>
-              <b>Advanced</b>: Deep knowledge; can mentor others and handle
-              complex tasks.
-            </li>
-            <li>
-              <b>Expert</b>: Recognized authority; innovates and sets direction
-              in this area.
-            </li>
-          </ul>
-        ) : (
-          <ul className="text-sm list-disc pl-6">
-            <li>
-              <b>None</b>: No experience or knowledge in this area.
-            </li>
-            <li>
-              <b>Basic</b>: Understands fundamentals; limited practical
-              experience.
-            </li>
-            <li>
-              <b>Proficient</b>: Applies knowledge effectively; can contribute
-              to decisions.
-            </li>
-            <li>
-              <b>Highly Skilled</b>: Deep expertise; leads and mentors in this
-              area.
-            </li>
-            <li>
-              <b>Authority</b>: Recognized expert; shapes strategy and best
-              practices.
-            </li>
-          </ul>
-        )}
+        <div className="font-semibold mb-2">
+          Skills and Experience Assessment Scale:
+        </div>
+        <table
+          className="w-full text-sm"
+          style={{ borderCollapse: "collapse" }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{
+                  background: "var(--rosy-brown)",
+                  padding: "8px",
+                  textAlign: "left",
+                  width: 180,
+                }}
+              >
+                Level
+              </th>
+              <th
+                style={{
+                  background: "var(--rosy-brown)",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Description
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{ border: "2px solid rosybrown" }}>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  fontWeight: 600,
+                  color: "var(--foreground)",
+                }}
+              >
+                Developing
+                <br />
+                <span style={{ fontWeight: 400 }}>0–1 year</span>
+              </td>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  color: "var(--foreground)",
+                }}
+              >
+                <ul
+                  className="list-disc"
+                  style={{ margin: 0, paddingLeft: 20 }}
+                >
+                  <li>new director and/or new skill area for the director</li>
+                  <li>
+                    has little to no understanding and/or previous exposure
+                  </li>
+                  <li>
+                    new involvement therefore challenged to contribute to
+                    discussion
+                  </li>
+                  <li>
+                    has received no formal training and/or informal guidance
+                  </li>
+                  <li>
+                    will need concentrated development to begin to contribute
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr style={{ border: "2px solid rosybrown" }}>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  fontWeight: 600,
+                  color: "var(--foreground)",
+                }}
+              >
+                Basic
+                <br />
+                <span style={{ fontWeight: 400 }}>2–3 years</span>
+              </td>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  color: "var(--foreground)",
+                }}
+              >
+                <ul
+                  className="list-disc"
+                  style={{ margin: 0, paddingLeft: 20 }}
+                >
+                  <li>
+                    director has foundational level of
+                    skill/knowledge/experience
+                  </li>
+                  <li>
+                    demonstrates basic understanding and/or previous exposure
+                  </li>
+                  <li>
+                    able to contribute to discussion focused on fundamentals
+                  </li>
+                  <li>has received formal training and/or informal guidance</li>
+                  <li>
+                    requires additional development to consistently make a
+                    valuable contribution
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr style={{ border: "2px solid rosybrown" }}>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  fontWeight: 600,
+                  color: "var(--foreground)",
+                }}
+              >
+                Advanced
+                <br />
+                <span style={{ fontWeight: 400 }}>3–5 years</span>
+              </td>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  color: "var(--foreground)",
+                }}
+              >
+                <ul
+                  className="list-disc"
+                  style={{ margin: 0, paddingLeft: 20 }}
+                >
+                  <li>director has significant skill/knowledge/experience</li>
+                  <li>
+                    demonstrates advanced understanding and/or previous exposure
+                  </li>
+                  <li>
+                    actively contributes to discussion with confidence and
+                    competence; comfortable advancing ideas
+                  </li>
+                  <li>
+                    has received considerable formal training and/or guidance
+                  </li>
+                  <li>
+                    makes a strong contribution; opinions are valued and asks
+                    key questions
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr style={{ border: "2px solid rosybrown" }}>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  color: "#fff",
+                  padding: "8px",
+                  fontWeight: 600,
+                }}
+              >
+                Expert
+                <br />
+                <span style={{ fontWeight: 400 }}>5+ years</span>
+              </td>
+              <td
+                style={{
+                  background: "var(--tan)",
+                  padding: "8px",
+                  color: "var(--foreground)",
+                }}
+              >
+                <ul
+                  className="list-disc"
+                  style={{ margin: 0, paddingLeft: 20 }}
+                >
+                  <li>
+                    director possesses extensive skill/knowledge/experience
+                  </li>
+                  <li>
+                    has achieved expert level of understanding and/or previous
+                    exposure
+                  </li>
+                  <li>
+                    superior contributor; advances ideas with a high degree of
+                    confidence and competence, leading as needed
+                  </li>
+                  <li>
+                    has received significant formal training and guidance and is
+                    able to provide same to colleagues
+                  </li>
+                  <li>
+                    consistently makes a value-add contribution; opinions are
+                    sought and asks insightful questions
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
