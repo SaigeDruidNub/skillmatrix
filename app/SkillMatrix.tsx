@@ -2,24 +2,89 @@ import React, { useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+const COOPERATIVE_SKILLS = [
+  {
+    name: "Collaboration",
+    description: "Works effectively with others to achieve shared goals.",
+  },
+  {
+    name: "Conflict Resolution",
+    description: "Manages and resolves interpersonal conflicts constructively.",
+  },
+  {
+    name: "Inclusivity",
+    description:
+      "Promotes and values diversity and inclusion in the workplace.",
+  },
+  {
+    name: "Adaptability",
+    description: "Adjusts effectively to new situations and challenges.",
+  },
+  {
+    name: "Ethical Practice",
+    description: "Acts with integrity and upholds ethical standards.",
+  },
+];
+
 const DEFAULTS = {
   employee: {
     skills: [
-      "Communication",
-      "Teamwork",
-      "Technical Knowledge",
-      "Problem Solving",
-      "Time Management",
+      {
+        name: "Communication",
+        description:
+          "Clearly conveys information and ideas through a variety of media to individuals or groups.",
+      },
+      {
+        name: "Teamwork",
+        description:
+          "Works cooperatively and collaboratively with others to achieve collective goals.",
+      },
+      {
+        name: "Technical Knowledge",
+        description:
+          "Possesses and applies the specific technical knowledge and skills required for the job.",
+      },
+      {
+        name: "Problem Solving",
+        description: "Identifies problems and develops logical solutions.",
+      },
+      {
+        name: "Time Management",
+        description:
+          "Effectively manages time and priorities to meet deadlines.",
+      },
+      ...COOPERATIVE_SKILLS,
     ],
     levels: ["None", "Beginner", "Intermediate", "Advanced", "Expert"],
   },
   board: {
     skills: [
-      "Leadership",
-      "Strategic Thinking",
-      "Financial Acumen",
-      "Risk Management",
-      "Governance",
+      {
+        name: "Leadership",
+        description:
+          "Guides and motivates others to achieve organizational goals.",
+      },
+      {
+        name: "Strategic Thinking",
+        description:
+          "Develops effective strategies aligned with organizational vision and goals.",
+      },
+      {
+        name: "Financial Acumen",
+        description:
+          "Understands and applies financial principles to decision-making.",
+      },
+      {
+        name: "Risk Management",
+        description:
+          "Identifies, assesses, and mitigates risks to the organization.",
+      },
+      {
+        name: "Governance",
+        description:
+          "Ensures compliance with policies, regulations, and best practices.",
+      },
+      ...COOPERATIVE_SKILLS,
     ],
     levels: ["None", "Basic", "Proficient", "Highly Skilled", "Authority"],
   },
@@ -41,9 +106,9 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
     pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
     pdf.save("skill-matrix.pdf");
   };
-  const [skills, setSkills] = React.useState<string[]>([
-    ...DEFAULTS[type].skills,
-  ]);
+  const [skills, setSkills] = React.useState<
+    { name: string; description: string }[]
+  >([...DEFAULTS[type].skills]);
   const [people, setPeople] = React.useState<string[]>(["Person 1"]);
   // matrix[row][col]: row = skill, col = person
   const [matrix, setMatrix] = React.useState<number[][]>([
@@ -53,7 +118,13 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
   // Skill name change
   const handleSkillChange = (idx: number, value: string) => {
     const updated = [...skills];
-    updated[idx] = value;
+    updated[idx] = { ...updated[idx], name: value };
+    setSkills(updated);
+  };
+
+  const handleSkillDescChange = (idx: number, value: string) => {
+    const updated = [...skills];
+    updated[idx] = { ...updated[idx], description: value };
     setSkills(updated);
   };
 
@@ -80,7 +151,7 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
 
   // Add a new skill (row)
   const addSkill = () => {
-    setSkills([...skills, ""]);
+    setSkills([...skills, { name: "", description: "" }]);
     setMatrix([...matrix, Array(people.length).fill(0)]);
   };
 
@@ -189,7 +260,27 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
                 }}
               >
                 <td className="border-b px-4 py-2">
-                  <input
+                  <div style={{ marginBottom: 4 }}>
+                    <input
+                      className="w-full border rounded px-2 py-1 mb-1"
+                      style={{
+                        background:
+                          skillIdx % 2 === 0
+                            ? "var(--cambridge-blue)"
+                            : "var(--opal)",
+                        color: "var(--foreground)",
+                        borderColor: "var(--dim-gray)",
+                        minWidth: 150,
+                        fontWeight: 600,
+                      }}
+                      value={skill.name}
+                      onChange={(e) =>
+                        handleSkillChange(skillIdx, e.target.value)
+                      }
+                      placeholder="Skill name"
+                    />
+                  </div>
+                  <textarea
                     className="w-full border rounded px-2 py-1"
                     style={{
                       background:
@@ -198,13 +289,15 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
                           : "var(--opal)",
                       color: "var(--foreground)",
                       borderColor: "var(--dim-gray)",
-                      minWidth: 150,
+                      fontSize: 13,
+                      minHeight: 32,
+                      resize: "vertical",
                     }}
-                    value={skill}
+                    value={skill.description}
                     onChange={(e) =>
-                      handleSkillChange(skillIdx, e.target.value)
+                      handleSkillDescChange(skillIdx, e.target.value)
                     }
-                    placeholder="Skill name"
+                    placeholder="Skill description"
                   />
                 </td>
                 {people.map((_, personIdx) => (
@@ -275,6 +368,63 @@ export function SkillMatrix({ type }: { type: "employee" | "board" }) {
         >
           + Add Person
         </button>
+      </div>
+
+      {/* Rating Scale Key */}
+      <div
+        className="mb-8 mt-4 p-4 rounded"
+        style={{
+          background: "var(--opal)",
+          border: "1px solid var(--dim-gray)",
+          maxWidth: 600,
+        }}
+      >
+        <div className="font-semibold mb-2">Rating Scale Key:</div>
+        {type === "employee" ? (
+          <ul className="text-sm list-disc pl-6">
+            <li>
+              <b>None</b>: No experience or knowledge in this area.
+            </li>
+            <li>
+              <b>Beginner</b>: Basic awareness or understanding; requires
+              supervision.
+            </li>
+            <li>
+              <b>Intermediate</b>: Can perform tasks independently; solid
+              understanding.
+            </li>
+            <li>
+              <b>Advanced</b>: Deep knowledge; can mentor others and handle
+              complex tasks.
+            </li>
+            <li>
+              <b>Expert</b>: Recognized authority; innovates and sets direction
+              in this area.
+            </li>
+          </ul>
+        ) : (
+          <ul className="text-sm list-disc pl-6">
+            <li>
+              <b>None</b>: No experience or knowledge in this area.
+            </li>
+            <li>
+              <b>Basic</b>: Understands fundamentals; limited practical
+              experience.
+            </li>
+            <li>
+              <b>Proficient</b>: Applies knowledge effectively; can contribute
+              to decisions.
+            </li>
+            <li>
+              <b>Highly Skilled</b>: Deep expertise; leads and mentors in this
+              area.
+            </li>
+            <li>
+              <b>Authority</b>: Recognized expert; shapes strategy and best
+              practices.
+            </li>
+          </ul>
+        )}
       </div>
     </div>
   );
